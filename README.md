@@ -13,4 +13,15 @@ The following raw data files were used in developing this repo and are available
 * Solution-grown trans-stilbene:  `Set_1_Test_20150701_115205_Ch1_Stil_316B_1325V_signal_raw.mat`, 369 MB  
 * LLNL PSD-capable plastic:  `Set_1_Test_20150701_115205_Ch3_Plastic_3901_1375V_signal_raw.mat`, 163 MB
 
+This data should be downloaded to [`/data/raw/`](/data/raw).
+
+Methods  
+-------  
+
+
+
+
+
+
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
