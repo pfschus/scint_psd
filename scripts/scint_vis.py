@@ -11,10 +11,13 @@ import sys
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
+import scint_math as scint_math
 
 
-
-def plot_raw_pulses(signal_raw, i_values, plot_with = 'matplotlib'):
+def plot_raw_pulses(signal_raw, 
+                    i_values, 
+                    cfd_shift_frac = 0,
+                    plot_with = 'matplotlib'):
     """
     Make a plot of raw pulses.
     
@@ -27,6 +30,11 @@ def plot_raw_pulses(signal_raw, i_values, plot_with = 'matplotlib'):
     i_values : list of ints
         Indices of events you want to visualize
         If you want to plot a single pulse, use [i] to keep list format
+    cfd_shift_frac : float
+        Fractional amplitude used by cfd for centering pulses
+        If 0, do not apply a shift
+        Accepts fractions between 0 and 1
+        Used to shift the position of the pulses to synchronize rise times
     plot_with : string
         'matplotlib' (default) or 'plotly'
     
@@ -37,17 +45,22 @@ def plot_raw_pulses(signal_raw, i_values, plot_with = 'matplotlib'):
     """
     
     if len(i_values) > 1:
-        title_text = 'Visualizing {} samples'.format(len(i_values))
+        title_text = 'Visualizing {} raw samples'.format(len(i_values))
     else:
         title_text = 'Visualizing sample i = {}'.format(i_values)
     
+    x_values = np.arange(signal_raw.shape[1])
+    if cfd_shift_frac > 0:
+        b0 = scint_math.cfd(signal_raw, frac = cfd_shift_frac)
+    else:
+        b0 = np.zeros(signal_raw.shape[0])
     
     if plot_with == 'matplotlib':
         fig = plt.figure()
         ax = fig.gca()
 
         for i in i_values:
-            ax.plot(signal_raw[i,:])
+            ax.plot(x_values-b0[i], signal_raw[i,:])
             
         plt.xlabel('Sample')
         plt.ylabel('Channel')
@@ -58,7 +71,8 @@ def plot_raw_pulses(signal_raw, i_values, plot_with = 'matplotlib'):
         # Add traces
         traces = []
         for i in i_values:
-            traces.append(go.Scatter(y = signal_raw[i,:],
+            traces.append(go.Scatter(x = x_values-b0[i], 
+                                     y = signal_raw[i,:],
                                      name = '{}'.format(i)))
 
         # Set up layout
