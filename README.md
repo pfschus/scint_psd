@@ -2,14 +2,14 @@
 
 This repo collects numerous methods I have developed throughout my research for analyzing pulse shapes by particle type for organic scintillator radiation detectors. 
 
-Author: Patricia Schuster, 2020  
-==============================
+**Author: Patricia Schuster, 2020**
+
 
 **NOTE ON FIGURES**: This repo makes use of the interactive plotting library [`plotly`](https://plotly.com/). Plotly generates interactive visualizations with convenient features such as hoverover and live legends for toggling datasets on and off. When viewing Jupyter notebooks on GitHub, plotly figures will not appear because GitHub renders a *static* view of the notebook. If you wish to see this figures (and... you do), download the repo to your computer and load the notebooks locally.
 
 
-Datasets
---------
+# Datasets
+
 The following raw data files were used in developing this repo and are available for you to download from [this folder](https://umich.box.com/v/scint-psd-repo-datar). These datasets were collected throughout the research that led to the following papers: [1](https://ieeexplore.ieee.org/document/7465791/), [2](https://www.sciencedirect.com/science/article/pii/S0168900216311342?via%3Dihub), [3](https://ieeexplore.ieee.org/document/8353858/). The files retain their original filenames as recorded in the data collection.   
 * Anthracene: `andT_th000_ph065_20150212_155736_signal_raw.mat`, 318 MB  
 * P-terphenyl:  `S4DT_th030_ph014_20150928_151727_PTER_1300V_Pos4_signal_raw.mat`, 632 MB  
@@ -18,8 +18,8 @@ The following raw data files were used in developing this repo and are available
 
 This data should be downloaded to [`/data/raw/`](/data/raw).
 
-Methods  
--------  
+# Methods  
+
 The following methods will be explained in this repo:
 
 ## Load and visualize raw signal
@@ -35,7 +35,24 @@ Option to align the pulses by rise time using a constant fraction descriminator:
     
 ![fig/raw_pulses_anth.png](fig/raw_pulses_anth.png)
 
+## Calculate `L_ch` (light output) and `S` (pulse shape parameter
 
+Calculate the light output in integrated digitizer channel units (IDCU). This can be converted to keVee with a light output calibration.
+
+Here is a figure of a raw pulse, adapted from [3](https://ieeexplore.ieee.org/document/8353858/), that shows the integration windows on the pulse with respect to $i_P$. The step sizes $\Delta_0$, $\Delta_1$, and $\Delta_2$ are input parameters in the functions `scint_psd.calc_L_ch()` and `scint_psd.calc_S()`. 
+
+![fig/raw_pulse.png]
+
+    L_ch = scint.calc_L_ch(signal_raw,
+                           Delta_0 = 10,
+                           Delta_2 = 350,
+                           cfd_frac = 0.5)
+                       
+    S = scint.calc_S(signal_raw, 
+                     Delta_1 = 60,
+                     Delta_2 = 160,
+                     Delta_0 = 10,
+                     cfd_frac = 0.6)
 
 
 * Calculate `L`, the light output, for each event  
@@ -47,8 +64,8 @@ Option to align the pulses by rise time using a constant fraction descriminator:
 
 
 
-Installation
-------------
+# Installation
+
 Create a new environment with Python version = 3.7 and install the packages in the requirements.txt file. 
 
 
