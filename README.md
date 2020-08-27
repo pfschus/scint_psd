@@ -35,13 +35,13 @@ Option to align the pulses by rise time using a constant fraction descriminator:
     
 ![fig/raw_pulses_anth.png](fig/raw_pulses_anth.png)
 
-## Calculate `L_ch` (light output) and `S` (pulse shape parameter
+## Calculate `L_ch` (light output) and `S` (pulse shape parameter)
 
-Calculate the light output in integrated digitizer channel units (IDCU). This can be converted to keVee with a light output calibration.
+Methods for calculating the light ouput in integrated digitizer channel units (IDCU) and the pulse shape parameter (tail-to-total) are explained in [this notebook](notebooks/dev_calc_L_S.ipynb). Light output can be converted to keVee with a light output calibration.
 
 Here is a figure of a raw pulse, adapted from [3](https://ieeexplore.ieee.org/document/8353858/), that shows the integration windows on the pulse with respect to $i_P$. The step sizes $\Delta_0$, $\Delta_1$, and $\Delta_2$ are input parameters in the functions `scint_psd.calc_L_ch()` and `scint_psd.calc_S()`. 
 
-![fig/raw_pulse.png]
+![fig/raw_pulse.png](fig/raw_pulse.png)
 
     L_ch = scint.calc_L_ch(signal_raw,
                            Delta_0 = 10,
@@ -54,9 +54,14 @@ Here is a figure of a raw pulse, adapted from [3](https://ieeexplore.ieee.org/do
                      Delta_0 = 10,
                      cfd_frac = 0.6)
 
+A plotting method for visualizing `L_ch` vs. `S` in a "PSD Plot" is included in `scint_vis.plot_L_ch_vs_S()`. 
 
-* Calculate `L`, the light output, for each event  
-* Calculate `S`, the pulse shape parameter, for each event  
+![fig/psd_plot_example.png](fig/psd_plot_example.png)
+
+
+
+
+  
 * Create a 2-dimensional PSD plot of `L` vs. `S`  
 * Calculate the figure-of-merit (FOM) of neutron-gamma separation  
 
